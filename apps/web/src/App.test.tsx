@@ -3,11 +3,20 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { App } from "./App";
 
 describe("App", () => {
-  it("advances through customer flow steps", () => {
+  it("renders the splash screen on load", () => {
     render(<App />);
+    expect(screen.getByText("QRPrint")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Get Started" }),
+    ).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("Current step: Splash")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    expect(screen.getByText("Current step: Welcome")).toBeInTheDocument();
+  it("advances from splash to store step", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Get Started" }));
+    // Store step shows a loading or error state (no real API in tests)
+    expect(
+      screen.getByText(/loading store|could not load/i),
+    ).toBeInTheDocument();
   });
 });
