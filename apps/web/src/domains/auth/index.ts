@@ -1,3 +1,3 @@
-export type authDomain = {
+export type AuthDomain = {
   name: "auth";
 };

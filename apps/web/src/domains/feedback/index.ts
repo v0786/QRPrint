@@ -1,3 +1,3 @@
-export type feedbackDomain = {
+export type FeedbackDomain = {
   name: "feedback";
 };

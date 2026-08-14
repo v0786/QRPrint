@@ -1,3 +1,3 @@
-export type pricingDomain = {
+export type PricingDomain = {
   name: "pricing";
 };

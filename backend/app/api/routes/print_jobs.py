@@ -1,18 +1,24 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.application.print_jobs import (
     ConcurrencyConflictError,
     InvalidTransitionError,
     PrintJobCreateRequest,
+    PrintJobService,
     PrintJobTransitionRequest,
-    service,
+    get_print_job_service,
 )
 
 router = APIRouter(prefix="/print-jobs", tags=["print-jobs"])
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-def create_print_job(payload: PrintJobCreateRequest) -> dict[str, object]:
+def create_print_job(
+    payload: PrintJobCreateRequest,
+    service: Annotated[PrintJobService, Depends(get_print_job_service)],
+) -> dict[str, object]:
     job = service.create(payload)
     return {
         "id": job.id,
@@ -23,7 +29,11 @@ def create_print_job(payload: PrintJobCreateRequest) -> dict[str, object]:
 
 
 @router.post("/{job_id}/transition")
-def transition_print_job(job_id: str, payload: PrintJobTransitionRequest) -> dict[str, object]:
+def transition_print_job(
+    job_id: str,
+    payload: PrintJobTransitionRequest,
+    service: Annotated[PrintJobService, Depends(get_print_job_service)],
+) -> dict[str, object]:
     try:
         job = service.transition(job_id, payload)
     except KeyError as exc:

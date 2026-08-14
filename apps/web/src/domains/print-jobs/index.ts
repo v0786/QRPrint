@@ -1,3 +1,3 @@
-export type print_jobsDomain = {
+export type PrintJobsDomain = {
   name: "print-jobs";
 };

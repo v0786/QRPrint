@@ -7,7 +7,7 @@ import prettier from "eslint-config-prettier";
 
 export default [
   {
-    ignores: ["public/sw.js"],
+    ignores: ["public/sw.js", "dist/**", "src/**/*.js"],
   },
   js.configs.recommended,
   {
